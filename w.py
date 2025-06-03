@@ -5,6 +5,8 @@ import os
 import random
 import string
 
+import pyperclip
+
 def generate_random_filename():
     # 3桁のランダムな大文字の英字または数字を生成
     return 'remind' + ''.join(random.choices(string.ascii_uppercase + string.digits, k=3)) + '.txt'
@@ -17,18 +19,31 @@ def open_in_editor(filename):
     else:  # その他のUNIX系OSの場合
         os.system(f'xdg-open {filename}')
 
+def is_empty(s):
+    return len(s.strip())==0
+
 def main():
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         print("Usage: w.py (wait_time_in_minutes) (command_line)")
         sys.exit(1)
     
     wait_time = int(sys.argv[1])
     command_line = ' '.join(sys.argv[2:])
-    print(f"{command_line}")
 
-    # 待ち時間（分）を秒に変換
+    if is_empty(command_line):
+        cb = pyperclip.paste()
+        command_line = cb
+    print(f"commandline: {command_line}")
+
     wait_seconds = wait_time * 60
     print(f"Waiting for {wait_time} minute(s)...")
+
+    # クリップボード経由でも空なら実行できないのでその旨を知らせる
+    # 単に wait sec を 0 にして、コマンドラインもテキストにしてスルーさせればいい
+    if is_empty(command_line):
+        wait_seconds = 0
+        command_line = '<コマンドラインが指定されていません。指定してください。>'
+
     time.sleep(wait_seconds)
 
     if command_line.startswith("http://") or command_line.startswith("https://"):

@@ -14,8 +14,12 @@ Waiter Launcher, n分後に起動するだけのプログラム。
 URL の場合は、その URL をブラウザで開く。それ以外の場合はテキストとみなし、テキストファイルに保存した上でそのファイルを開く。つまり利用者目線では「新しいテキストファイルが開かれる」という形でリマインドされる。
 
 ## Requirements
-- Windows
-- Python 3.7+
+- OS
+    - Windows
+- Python
+    - Python 3.7+
+- Libs
+    - pyperclip
 
 ## How to
 
